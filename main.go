@@ -42,13 +42,16 @@ func main() {
         runqnt = 30
     }
 
-    maxClique := 0
     for run = 0; run < runqnt; run++ {
         setSeed(seed + run)
         colony := aco.NewColony(ants, generations, minPheromone, maxPheromone, evaporationRate, ds.Input)
-        maxClique = colony.Run()
+        maxClique, stats := colony.Run()
+        fmt.Println("Max Clique:", maxClique)
+        // TODO: write this in a file using dataset.Write(...)
+        for i, stat := range stats {
+            fmt.Printf("gen:%d,best:%d,worst:%d,mean:%d\n", i+1, stat[0], stat[1], stat[2])
+        }
     }
-    fmt.Println("Max Clique:", maxClique)
 }
 
 func initializeFlags() {

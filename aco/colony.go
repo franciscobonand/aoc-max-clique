@@ -28,7 +28,10 @@ func NewColony(ants, iterations int, minPheromone, maxPheromone, evaporationRate
     }
 }
 
-func (c colony) Run() int {
+// Run returns the max clique and the stats for the run
+func (c colony) Run() (int, [][]int) {
+    var mean, worst int
+    stats := make([][]int, c.generations)
     for i := 0; i < c.generations; i++ {
         cliques := make([][]string, c.ants)
         for ant := 0; ant < c.ants; ant++ {
@@ -36,8 +39,23 @@ func (c colony) Run() int {
             cliques = append(cliques, clique)
         }
         c.updatePheromones(cliques)
+        mean, worst = c.getStats(cliques)
+        stats[i] = []int{len(c.bestClique), worst, mean}
     }
-    return len(c.bestClique)
+    return len(c.bestClique), stats
+}
+
+func (c colony) getStats(cliques [][]string) (int, int) {
+    worst := c.bestClique 
+    total := 0
+    for _, clique := range cliques {
+        total += len(clique)
+        if len(clique) < len(worst) {
+            worst = clique
+        }
+    }
+    mean := total / len(cliques)
+    return mean, len(worst)
 }
 
 // updatePheromones uses elitism (best solution is used to update the pheromones)
