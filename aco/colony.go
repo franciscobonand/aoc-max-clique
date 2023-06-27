@@ -36,7 +36,6 @@ func (c colony) Run() int {
             clique := c.buildClique()
             cliques = append(cliques, clique)
         }
-        fmt.Println(c.bestClique)
         c.updatePheromones(cliques)
     }
     return len(c.bestClique)
