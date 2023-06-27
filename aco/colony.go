@@ -1,7 +1,6 @@
 package aco
 
 import (
-	"fmt"
 	"math"
 	"math/rand"
 
