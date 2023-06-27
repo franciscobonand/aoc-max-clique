@@ -10,7 +10,7 @@ import (
 
 type colony struct {
     ants int
-    iterations int
+    generations int
     minPheromone float64
     maxPheromone float64
     evaporationRate float64
@@ -21,7 +21,7 @@ type colony struct {
 func NewColony(ants, iterations int, minPheromone, maxPheromone, evaporationRate float64, graph map[string]map[string]float64) *colony {
     return &colony{
         ants: ants,
-        iterations: iterations,
+        generations: iterations,
         minPheromone: minPheromone,
         maxPheromone: maxPheromone,
         evaporationRate: evaporationRate,
@@ -30,7 +30,7 @@ func NewColony(ants, iterations int, minPheromone, maxPheromone, evaporationRate
 }
 
 func (c colony) Run() int {
-    for i := 0; i < c.iterations; i++ {
+    for i := 0; i < c.generations; i++ {
         cliques := make([][]string, c.ants)
         for ant := 0; ant < c.ants; ant++ {
             clique := c.buildClique()

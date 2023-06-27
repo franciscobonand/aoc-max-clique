@@ -17,7 +17,7 @@ type Dataset struct {
 
 // Read reads a file resided in the given path.
 // The path is relative to the directory the program is executed
-func Read(fpath string, taomax float64) (*Dataset, error) {
+func Read(fpath string, maxPheromone float64) (*Dataset, error) {
     f, err := os.Open(fpath)
     if err != nil {
         return nil, err
@@ -40,8 +40,8 @@ func Read(fpath string, taomax float64) (*Dataset, error) {
             if _, ok := ds.Input[content[2]]; !ok {
                 ds.Input[content[2]] = map[string]float64{}
             }
-            ds.Input[content[1]][content[2]] = taomax
-            ds.Input[content[2]][content[1]] = taomax
+            ds.Input[content[1]][content[2]] = maxPheromone
+            ds.Input[content[2]][content[1]] = maxPheromone
         }
     }
 
