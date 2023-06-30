@@ -4,8 +4,10 @@ import (
 	"math"
 	"math/rand"
 	"sort"
+	"strings"
 
 	set "github.com/hashicorp/go-set"
+	sts "github.com/montanaflynn/stats"
 	"gonum.org/v1/gonum/floats"
 )
 
@@ -31,33 +33,38 @@ func NewColony(ants, iterations int, minPheromone, maxPheromone, evaporationRate
 }
 
 // Run returns the max clique and the stats for the run
-func (c colony) Run() (int, [][]int) {
-	var mean, worst int
-	stats := make([][]int, c.generations)
+func (c colony) Run() (int, [][]float64) {
+	var mean, worst, repeated, sdev float64
+	stats := make([][]float64, c.generations)
 	for i := 0; i < c.generations; i++ {
-		cliques := make([][]string, c.ants)
+		cliques := make([][]string, 0)
 		for ant := 0; ant < c.ants; ant++ {
 			clique := c.buildClique()
+			sort.Strings((clique))
 			cliques = append(cliques, clique)
 		}
 		c.updatePheromones(cliques)
-		mean, worst = c.getStats(cliques)
-		stats[i] = []int{len(c.bestClique), worst, mean}
+		mean, worst, repeated, sdev = c.getStats(cliques)
+		stats[i] = []float64{float64(len(c.bestClique)), worst, mean, repeated, sdev}
 	}
 	return len(c.bestClique), stats
 }
 
-func (c colony) getStats(cliques [][]string) (int, int) {
+func (c colony) getStats(cliques [][]string) (float64, float64, float64, float64) {
 	worst := c.bestClique
-	total := 0
+	var cliqueStrs []string
+	var sizes []float64
 	for _, clique := range cliques {
-		total += len(clique)
+		sizes = append(sizes, float64(len(clique)))
 		if len(clique) < len(worst) {
 			worst = clique
 		}
+		cliqueStrs = append(cliqueStrs, strings.Join(clique, ","))
 	}
-	mean := total / len(cliques)
-	return mean, len(worst)
+	unicliques := set.From[string](cliqueStrs)
+	mean, _ := sts.Mean(sizes)
+	sdev, _ := sts.StandardDeviation(sizes)
+	return mean, float64(len(worst)), float64(c.ants - unicliques.Size()), sdev
 }
 
 // updatePheromones uses elitism (best solution is used to update the pheromones)
