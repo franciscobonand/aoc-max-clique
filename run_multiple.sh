@@ -2,7 +2,7 @@ for ants in 20 50 100 200 500
 do
     for gens in 20 50 100 200 500
     do
-        for evap in 0.1 0.2 0.3 0.5 
+        for evap in 0.05 0.1 0.2 0.3 0.5 
         do
             for data in datasets/easy.col datasets/hard.col
             do 
