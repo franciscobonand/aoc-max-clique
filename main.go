@@ -41,7 +41,9 @@ func main() {
 	fileaux := strings.Split(file, "/")
 	file = fileaux[len(fileaux)-1]
 	file = strings.Split(file, ".")[0]
+	statsfile := strings.Join([]string{file, strconv.Itoa(ants), strconv.Itoa(generations), fmt.Sprintf("%.1f", evaporationRate)}, "-")
 
+	fmt.Println(statsfile)
 	// This will be used to run multiple experiments to generate stats
 	var runqnt int64 = 1
 	var run int64
@@ -80,7 +82,6 @@ func main() {
 				stats[gen][stat] /= float64(runqnt)
 			}
 		}
-		statsfile := strings.Join([]string{file, strconv.Itoa(ants), strconv.Itoa(generations), fmt.Sprintf("%.1f", evaporationRate)}, "-")
 		err := dataset.Write(statsfile, stats, elapsed)
 		if err != nil {
 			fmt.Println(err.Error())
