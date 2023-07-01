@@ -19,9 +19,10 @@ type colony struct {
 	evaporationRate float64
 	bestClique      []string
 	graph           Graph
+	elitism         bool
 }
 
-func NewColony(ants, iterations int, minPheromone, maxPheromone, evaporationRate float64, graph map[string]map[string]float64) *colony {
+func NewColony(ants, iterations int, minPheromone, maxPheromone, evaporationRate float64, graph map[string]map[string]float64, elitism bool) *colony {
 	return &colony{
 		ants:            ants,
 		generations:     iterations,
@@ -29,6 +30,7 @@ func NewColony(ants, iterations int, minPheromone, maxPheromone, evaporationRate
 		maxPheromone:    maxPheromone,
 		evaporationRate: evaporationRate,
 		graph:           graph,
+		elitism:         elitism,
 	}
 }
 
@@ -91,6 +93,9 @@ func (c *colony) updatePheromones(cliques [][]string) {
 	}
 	// Deposit pheromones for best ant
 	bestDiff := float64(len(c.bestClique) - len(bestClique))
+	if c.elitism {
+		bestClique = c.bestClique
+	}
 	for _, vertex1 := range bestClique {
 		for _, vertex2 := range bestClique {
 			if vertex1 == vertex2 {

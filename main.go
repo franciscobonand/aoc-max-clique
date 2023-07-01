@@ -20,7 +20,7 @@ var (
 	file                                        string
 	minPheromone, maxPheromone, evaporationRate float64
 	seed                                        int64
-	verbose, getstats                           bool
+	verbose, getstats, elitism                  bool
 )
 
 func main() {
@@ -41,7 +41,10 @@ func main() {
 	fileaux := strings.Split(file, "/")
 	file = fileaux[len(fileaux)-1]
 	file = strings.Split(file, ".")[0]
-	statsfile := strings.Join([]string{file, strconv.Itoa(ants), strconv.Itoa(generations), fmt.Sprintf("%.1f", evaporationRate)}, "-")
+	statsfile := strings.Join([]string{file, strconv.Itoa(ants), strconv.Itoa(generations), fmt.Sprintf("%.2f", evaporationRate)}, "-")
+	if elitism {
+		statsfile += "e"
+	}
 
 	fmt.Println(statsfile)
 	// This will be used to run multiple experiments to generate stats
@@ -57,7 +60,7 @@ func main() {
 
 	for run = 0; run < runqnt; run++ {
 		setSeed(seed + run)
-		colony := aco.NewColony(ants, generations, minPheromone, maxPheromone, evaporationRate, ds.Input)
+		colony := aco.NewColony(ants, generations, minPheromone, maxPheromone, evaporationRate, ds.Input, elitism)
 		maxClique, stats := colony.Run()
 		if verbose {
 			for i, stat := range stats {
@@ -99,6 +102,7 @@ func initializeFlags() {
 	flag.Int64Var(&seed, "seed", 1, "seed for generating the initial population")
 	flag.BoolVar(&verbose, "verbose", false, "Prints stats per generation")
 	flag.BoolVar(&getstats, "getstats", false, "generate stats and saves into an outpu file on ./analysis/")
+	flag.BoolVar(&elitism, "elitism", false, "Increases elitism on pheromone uptate strategy, increases exploitation")
 	flag.Parse()
 }
 
