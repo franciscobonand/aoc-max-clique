@@ -1,5 +1,8 @@
 # AOC - Clique Máximo
 
+## Francisco Bonome Andrade & Lucas Starling de Paula Salles
+
+
 O trabalho foi desenvolvido [nesse repositório do GitHub](https://github.com/franciscobonand/aoc-max-clique).
 
 O Problema do Clique Máximo é um problema clássico da teoria dos grafos e da complexidade computacional.
@@ -125,6 +128,24 @@ O valor adicionado é definido por `Quantidade Atual + (1 / (1 + (Melhor Soluç�
 
 As análises realizadas a partir dos [dados fornecidos](/datasets) podem ser encontradas no [Jupyter Notebook presente nesse repositório](CompNatTP2.ipynb).  
 Os resultados usados para análise podem ser encontrados na pasta ['analysis'](/analysis).
+
+### Os Problemas
+
+Foram disponibilizados três conjuntos de dados representando três problemas grafos de grande dimensionalidade:
+
+- Easy: Grafo com 500 nós, 62624 arestas, contendo clique maximo de tamanho 13.
+- Hard: Grafo com 700 nós, 121728 arestas, contendo clique maximo de tamanho 44.
+- Harder: Grafo com 600 nós, 207643 arestas, contendo clique maximo de tamanho 26. Esse Problema se mostrou mais simples que o 'Hard' apesar de conter um grafo de maior dimensão.
+
+### Parametros de otimização
+
+Para o processo de otimização por colonia de formigas existem três parametros relevantes à serem analisados:
+- Número de formigas - *ants*: Contagem do número de formigas utilizadas
+
+Analisaremos a performance do algoritmo de otimização por colonia de formigas implementado separadamente para os três problemas, isso porque observamos comportamentos divergentes com relação
+
+
+
 
 ## Conclusão
 
