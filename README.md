@@ -1,7 +1,7 @@
 # AOC - Clique Máximo
 
 
-## Francisco Bonome Andrade (2016006450) & Lucas Starling de Paula Salles (2016006697)
+## Francisco Bonome Andrade & Lucas Starling de Paula Salles
 
 
 
